@@ -1,11 +1,8 @@
 import menu
+import table
 
 
 def main():
-    #------- UNCOMMENT CODE ABOVE/BELOW FOR THE FIRST TIME -------#
-    #------- IT WILL CREATE DATABASE -------#
-    # table.User()
-    # table.Test().create_table()
 
     menu.Menu().main_menu()
 
@@ -13,5 +10,5 @@ def main():
 
 
 if __name__ == '__main__':
-    # table.main()
+    table.update_table()
     main()

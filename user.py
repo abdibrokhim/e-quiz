@@ -1,10 +1,9 @@
-import connections
+import menu
 import table
 
 
 class User:
-    Session = connections.get_session()
-    session = Session()
+    session = table.Session()
     end = False
 
     def main_menu(self):
@@ -31,30 +30,30 @@ class User:
                 print("\nINVALID")
 
     def sign_in(self):
-        # nickname = str(input("INPUT YOUR NICKNAME: ").upper())
-        # password = str(input("INPUT YOUR PASSWORD: "))
+        user_nickname = str(input("INPUT YOUR NICKNAME: ").upper())
+        user_password = str(input("INPUT YOUR PASSWORD: "))
 
-        # user = self.session.query(User).filter_by(nickname, password).all()
-        # if user:
-        #     menu.Menu().secondary_menu()
-        #     self.end = False
-        # else:
-        #     print('\nINVALID NICKNAME OR PASSWORD\n')
-        # if not self.end:
-        #     print("\nSIGN UP FIRSTLY\n")
-
-        for u in self.session.query(User).order_by(table.User.ID)[:3]:
-            print(u)
+        user = self.session.query(table.User).filter_by(NICKNAME=user_nickname,
+                                                        PASSWORD=user_password).all()
+        if user:
+            menu.Menu().secondary_menu()
+            self.end = True
+        else:
+            print('\nINVALID NICKNAME OR PASSWORD\n')
+            self.end = True
+        if not self.end:
+            print("\nSIGN UP FIRSTLY\n")
 
     def sign_up(self):
-        fullname = str(input("INPUT YOUR FULLNAME: ").upper())
-        nickname = str(input("INPUT YOUR NICKNAME: ").upper())
-        password = str(input("INPUT YOUR PASSWORD: "))
-        occupation = str(input("INPUT YOUR OCCUPATION: ").upper())
-        point = 0
+        user_fullname = str(input("INPUT YOUR FULLNAME: ").upper())
+        user_nickname = str(input("INPUT YOUR NICKNAME: ").upper())
+        user_password = str(input("INPUT YOUR PASSWORD: "))
+        user_occupation = str(input("INPUT YOUR OCCUPATION: ").upper())
+        user_point = 0
 
-        # self.session.add(table.User(f'{fullname}, {nickname}, {password}, {occupation}'))
-        self.session.add(table.User(fullname, nickname, password, occupation, point))
+        new_user = table.User(FULLNAME=user_fullname, NICKNAME=user_nickname, PASSWORD=user_password,
+                              OCCUPATION=user_occupation, POINT=user_point)
+        self.session.add(new_user)
 
         self.session.commit()
 

@@ -1,18 +1,18 @@
-# from sqlalchemy import create_engine
-# from sqlalchemy.orm import sessionmaker
-# from sqlalchemy.orm import declarative_base
-# from sqlalchemy import Sequence
-#
-# engine = create_engine('sqlite:///./database.db', echo=True)
-# Session = sessionmaker(bind=engine)
-# Base = declarative_base()
-# Column(Integer, Sequence('user_id_seq'), primary_key=True)
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import declarative_base
 from sqlalchemy import Column, Integer, String
-import connections
 
-Engine = connections.get_engine()
-Session = connections.get_session()
-Base = connections.get_base()
+engine = create_engine('sqlite:///./test.db', echo=True)
+Session = sessionmaker(bind=engine)
+Session.configure(bind=engine)
+Base = declarative_base()
+
+
+# import connections
+# Engine = connections.get_engine()
+# Session = connections.get_session()
+# Base = connections.get_base()
 
 
 class User(Base):
@@ -24,12 +24,9 @@ class User(Base):
     OCCUPATION = Column(String(50))
     POINT = Column(Integer)
 
-    def __init__(self, FULLNAME, NICKNAME, PASSWORD, OCCUPATION, POINT):
-        self.FULLNAME = FULLNAME
-        self.NICKNAME = NICKNAME
-        self.PASSWORD = PASSWORD
-        self.OCCUPATION = OCCUPATION
-        self.POINT = POINT
+    def __repr__(self):
+        return "<User(FULLNAME='%s', NICKNAME='%s', PASSWORD='%s', OCCUPATION='%s', POINT='%d')>" % (
+            self.FULLNAME, self.NICKNAME, self.PASSWORD, self.OCCUPATION, self.POINT)
 
 
 class Test(Base):
@@ -38,10 +35,15 @@ class Test(Base):
     DESCRIPTION = Column(String, nullable=False)
     ANSWER = Column(String, nullable=False)
 
-    def __init__(self, ID, DESCRIPTION, ANSWER):
-        self.ID = ID
-        self.DESCRIPTION = DESCRIPTION
-        self.ANSWER = ANSWER
+    def __repr__(self):
+        return "<Test(DESCRIPTION='%s', ANSWER='%s')>" % (
+            self.DESCRIPTION, self.ANSWER)
+
+    # Base.metadata.create_all(engine)
 
 
-    # Base.metadata.create_all(Engine)
+def update_table():
+    pass
+    # MOVE TWO ABOVE CLASSES WITHIN THIS FUNCTION IN ORDER TO CREATE TABLES
+    # THAN MOVE OUT WITHIN THIS FUNCTION AGAIN, IT'S INITIAL PLACE
+    # OTHERWISE IT WILL NOT WORK PROPERLY
