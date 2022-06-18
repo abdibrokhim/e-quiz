@@ -39,7 +39,7 @@ class Menu:
 
             if choice == 1:
                 quiz.Quiz().take_quiz()
-            if choice == 2:
+            elif choice == 2:
                 quiz.Quiz().get_result()
             elif choice == 0:
                 return False

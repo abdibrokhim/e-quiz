@@ -3,6 +3,7 @@ import table
 
 
 class User:
+    user_nickname = ""
     session = table.Session()
     end = False
 
@@ -36,6 +37,7 @@ class User:
         user = self.session.query(table.User).filter_by(NICKNAME=user_nickname,
                                                         PASSWORD=user_password).all()
         if user:
+            self.user_nickname = user_nickname
             menu.Menu().secondary_menu()
             self.end = True
         else:
@@ -58,3 +60,22 @@ class User:
         self.session.commit()
 
         print("\nNOW YOU CAN SIGN IN\n")
+
+    def get_users(self):
+        user = self.session.query(table.User).all()
+        for i in user:
+            print(i, end='\n')
+
+    def update_point(self):
+        # user_nickname = str(input("INPUT YOUR NICKNAME: ").upper())
+        # self.user_nickname = user_nickname
+        old_point = self.session.query(table.User.POINT).filter(table.User.NICKNAME == self.user_nickname)
+        self.session.query(table.User).filter(table.User.NICKNAME == self.user_nickname).update(
+            {'POINT': int(*old_point[0]) + 1})
+        self.session.commit()
+
+    def get_point(self):
+        user_point = self.session.query(table.User.POINT).filter(table.User.NICKNAME == self.user_nickname).all()
+        print('user: ', self.user_nickname)
+        print(*user_point[0])
+        return [*user_point[0]]
